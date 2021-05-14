@@ -1,8 +1,10 @@
-import React,{useState,useEffect} from "react"
+import React from "react"
+import ColorBox from "./Components"
+
  function App(){
    return(
        <div>
-           <h1>hello</h1>
+           <ColorBox/>
        </div>
    )
  }
