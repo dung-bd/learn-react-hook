@@ -1,31 +1,23 @@
 import React, {useState} from "react"
-//import PropTypes from "prop-types"
 
-/*ColorBox.propTypes={
-
-};*/
 function getRandomColor(){
-    const COLOR_LIST = ['deeppink', 'green', 'yellow', 'black', 'blue']
-    const randomIndex = Math.trunc(Math.random() * 5)
-    return COLOR_LIST[randomIndex];
+    const indexColor = ['deeppink' ,'black',' blue', 'yellow','green']
+    const randomColor = Math.trunc(Math.random * 5)
+    return indexColor[randomColor]
 }
-
 function ColorBox(){
-    /*const initColor =localStorage.getItem('box-color') || 'deeppink'
-      const[color, setColor] = useState(initColor)*/
-      const[color, setColor] = useState(()=>{
-        const initColor =localStorage.getItem('box-color') || 'deeppink'
+    const[color, setColor] = useState(()=>{
+        const initColor = localStorage.getItem('color-box') || 'deeppink'
         return initColor
-      })
-      function handleBoxClick(){
-          const newColor = getRandomColor();
-          setColor(newColor)
-          localStorage.setItem('box-color', newColor)
-      }
+    })
+    function handleBoxClick(){
+        const newColor = getRandomColor()
+        setColor(newColor)
+        localStorage.setItem('box-color', newColor)
+    }
     return(
         <div className="color-box" style={{backgroundColor: color}} onClick={handleBoxClick}>
-            COLOR BOX
+            ColorBox
         </div>
     )
 }
-export default ColorBox
