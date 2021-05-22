@@ -1,51 +1,47 @@
 import React, {useState, useEffect} from "react"
-import TodoForm from "./Components/TodoForm"
-import TodoList from "./Components/TodoList"
+import queryString from "query-string"
 import PostList from "./Components/PostList"
+import Pagination from "./Components/Pagination"
 function App(){
-    const[todoList, setTodoList] = useState([
-        //{id: 1, title: 'do homework'},
-        //{id: 2, title: 'wash the dishes'},
-        //{id: 3, title: 'cook the meal'}
-    ])
     const[postList, setPostList] = useState([])
-
+    const[pagination, setPagination] = useState({
+        _page: 1,
+        _limit: 10,
+        _totalRows: 1
+    })
+    const[filters, setFilters]= useState({
+       _limit: 10,
+       _page: 1 
+    })
     useEffect(() => {
         async function fetchPostList(){
             try{
-           const requestUrl = 'http://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1'
+           const paramString = queryString.stringify(filters)     
+           const requestUrl = `http://js-post-api.herokuapp.com/api/posts?${paramString}`
            const response = await fetch(requestUrl)
            const responseJSON = await response.json()
            console.log({ responseJSON })
-           const{data} = responseJSON
+           const{data, pagination} = responseJSON
            setPostList(data)
+           setPagination(pagination)
             }catch(error){
                 console.log('Failed to fetch the post list: ', error.message);
             }
         }
         fetchPostList()
-    }, [])
-    function handleRemoveClick(todo){
-        const newTodoList = todoList.filter((x)=>x.id !== todo.id)
-        setTodoList(newTodoList)
-    }
-    function handleToDoFormSubmit(formValues){
-      console.log("Form submit: ", formValues)
-      const newTodo ={
-          id: todoList.length + 1,
-          ... formValues,
-      }
-      const newTodoList = [...todoList]
-      newTodoList.push(newTodo)
-      setTodoList(newTodoList)
+    }, [filters])
+    function handlePageChange(newPage){
+        console.log('New Page: ', newPage)
+        setFilters({
+            ...filters,
+            _page: newPage
+        })
     }
     return(
         <div>
             <h1>PostList</h1>
             <PostList posts= {postList} /> 
-            {/* <h1>Welcome to my todoApp</h1> */}
-        {/* <TodoForm onSubmit={handleToDoFormSubmit}/> */}
-        {/* <TodoList todos={todoList} onTodoClick={handleRemoveClick} /> */}
+            <Pagination pagination={pagination} onPageChange={handlePageChange}/>
         </div>
     )
 }
