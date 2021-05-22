@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react"
 import queryString from "query-string"
 import PostList from "./Components/PostList"
 import Pagination from "./Components/Pagination"
+import PostFilterForm from "./Components/PostFiltersForm"
 function App(){
     const[postList, setPostList] = useState([])
     const[pagination, setPagination] = useState({
@@ -11,7 +12,7 @@ function App(){
     })
     const[filters, setFilters]= useState({
        _limit: 10,
-       _page: 1 
+       _page: 1,
     })
     useEffect(() => {
         async function fetchPostList(){
@@ -37,9 +38,18 @@ function App(){
             _page: newPage
         })
     }
+    function handleFiltersChange(newFilters){
+        console.log('New filters: ', newFilters);
+        setFilters({
+            ...filters,
+            _page: 1,
+            title_like: newFilters.searchTerm
+        })
+    }
     return(
         <div>
             <h1>PostList</h1>
+            <PostFilterForm onSubmit={handleFiltersChange}/>
             <PostList posts= {postList} /> 
             <Pagination pagination={pagination} onPageChange={handlePageChange}/>
         </div>
