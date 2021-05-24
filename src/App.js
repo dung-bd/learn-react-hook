@@ -3,6 +3,7 @@ import queryString from "query-string"
 import PostList from "./Components/PostList"
 import Pagination from "./Components/Pagination"
 import PostFilterForm from "./Components/PostFiltersForm"
+import Clock from "./Components/Clock"
 function App(){
     const[postList, setPostList] = useState([])
     const[pagination, setPagination] = useState({
@@ -52,6 +53,7 @@ function App(){
             <PostFilterForm onSubmit={handleFiltersChange}/>
             <PostList posts= {postList} /> 
             <Pagination pagination={pagination} onPageChange={handlePageChange}/>
+            <Clock />
         </div>
     )
 }
